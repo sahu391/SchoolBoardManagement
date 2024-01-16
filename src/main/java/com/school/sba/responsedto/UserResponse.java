@@ -1,12 +1,21 @@
-package com.school.sba.requestdto;
-
+package com.school.sba.responsedto;
+import com.school.sba.enums.UserRole;
 public class UserResponse {
 	
+	private int userId;
 	private String userName;
 	private String firstName;
 	private String lastName;
 	private long contactNo;
 	private String email;
+	private UserRole userRole;
+	
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 	public String getUserName() {
 		return userName;
 	}
@@ -37,18 +46,35 @@ public class UserResponse {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public UserResponse(String userName, String firstName, String lastName, long contactNo, String email) {
+	
+	public UserRole getUserRole() {
+		return userRole;
+	}
+	public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
+	}
+	
+	
+	public UserResponse(int userId, String userName, String firstName, String lastName, long contactNo, String email,
+			UserRole userRole) {
 		super();
+		this.userId = userId;
 		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.contactNo = contactNo;
 		this.email = email;
+		this.userRole = userRole;
 	}
+	
+	
 	public UserResponse() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
 	
+		
+	
+
 }

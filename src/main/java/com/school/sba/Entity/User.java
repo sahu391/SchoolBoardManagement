@@ -1,5 +1,7 @@
 package com.school.sba.Entity;
 
+import com.school.sba.enums.UserRole;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +24,7 @@ public class User {
 	
 	@Column(unique = true)
 	private String email;
-	private Enum UserRole;
+	private UserRole userRole;
 	
 	
 	public int getUserId() {
@@ -67,14 +69,11 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public Enum getUserRole() {
-		return UserRole;
+	public UserRole getUserRole() {
+		return userRole;
 	}
-	public void setUserRole(Enum userRole) {
-		UserRole = userRole;
+	public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
 	}
-	
-	
-	
 	
 }

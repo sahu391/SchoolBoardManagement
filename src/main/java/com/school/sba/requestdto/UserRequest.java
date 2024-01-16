@@ -1,83 +1,77 @@
 package com.school.sba.requestdto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import com.school.sba.enums.UserRole;
 
+import jakarta.validation.constraints.Pattern;
 public class UserRequest {
 	
-	
-    @NotEmpty(message="Name cannot be empty")
-	
-	@Pattern(regexp="^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$",message="username must" 
-	               +"contain altleat 8 t0 20 characters with no specialcharacters")
+	@Pattern(regexp="^[a-zA-Z0-9]+$",message="username must" 
+            +"contain altleat 8 t0 20 characters with no specialcharacters")
 	private String userName;
-    
-    @Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters")
-	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", message = "Password must"
-			+ " contain at least one letter, one number, one special character")
-    
-	private String password;
+    private String password;
 	private String firstName;
 	private String lastName;
 	private long contactNo;
-	
-	@NotBlank(message="Email cannot be blank")
-	@Email(regexp = "[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\\.[a-z]{2,}", message = "invalid email ")
 	private String email;
-	private Enum UserRole;
+	private UserRole userRole;
 	
 	
 	public String getUserName() {
 		return userName;
 	}
-	public void setUserName(String userName) {
+    public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	public String getPassword() {
+    public String getPassword() {
 		return password;
 	}
-	public void setPassword(String password) {
+
+    public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getFirstName() {
+
+    public String getFirstName() {
 		return firstName;
 	}
-	public void setFirstName(String firstName) {
+
+    public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	public String getLastName() {
+
+    public String getLastName() {
 		return lastName;
 	}
-	public void setLastName(String lastName) {
+
+    public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public long getContactNo() {
+
+    public long getContactNo() {
 		return contactNo;
 	}
-	public void setContactNo(long contactNo) {
+
+    public void setContactNo(long contactNo) {
 		this.contactNo = contactNo;
 	}
-	public String getEmail() {
+
+    public String getEmail() {
 		return email;
 	}
-	public void setEmail(String email) {
+    public void setEmail(String email) {
 		this.email = email;
 	}
-	public Enum getUserRole() {
-		return UserRole;
+    
+    public UserRole getUserRole() {
+		return userRole;
 	}
-	public void setUserRole(Enum userRole) {
-		UserRole = userRole;
+
+    public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
 	}
-	public UserRequest(
-			@NotEmpty(message = "Name cannot be empty") @Pattern(regexp = "^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$", message = "username mustcontain altleat 8 t0 20 characters with no specialcharacters") String userName,
-			@Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters") @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", message = "Password must contain at least one letter, one number, one special character") String password,
-			String firstName, String lastName, long contactNo,
-			@NotBlank(message = "Email cannot be blank") @Email(regexp = "[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\\.[a-z]{2,}", message = "invalid email ") String email,
-			Enum userRole) {
+
+    public UserRequest(
+			@Pattern(regexp = "^[a-zA-Z0-9]+$", message = "username mustcontain altleat 8 t0 20 characters with no specialcharacters") String userName,
+			String password, String firstName, String lastName, long contactNo, String email, UserRole userRole) {
 		super();
 		this.userName = userName;
 		this.password = password;
@@ -85,12 +79,19 @@ public class UserRequest {
 		this.lastName = lastName;
 		this.contactNo = contactNo;
 		this.email = email;
-		UserRole = userRole;
+		this.userRole = userRole;
 	}
-	public UserRequest() {
+    
+    
+    public UserRequest() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	
+	
+	
+	
 	
 	
 	
