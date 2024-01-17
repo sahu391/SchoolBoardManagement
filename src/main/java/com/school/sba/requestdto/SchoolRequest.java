@@ -1,69 +1,52 @@
-package com.school.sba.Entity;
+package com.school.sba.requestdto;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.school.sba.Entity.School;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 
-
-@Entity
-
-public class School {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int schoolId;
+public class SchoolRequest {
+	
 	private String schoolName;
 	private long contactNo;
 	private String emailId;
 	private String address;
 	
-
-	public int getSchoolId() {
-		return schoolId;
-	}
-
-	public void setSchoolId(int schoolId) {
-		this.schoolId = schoolId;
-	}
-
 	public String getSchoolName() {
 		return schoolName;
 	}
-
 	public void setSchoolName(String schoolName) {
 		this.schoolName = schoolName;
 	}
-
 	public long getContactNo() {
 		return contactNo;
 	}
-
 	public void setContactNo(long contactNo) {
 		this.contactNo = contactNo;
 	}
-
 	public String getEmailId() {
 		return emailId;
 	}
-
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
-
 	public String getAddress() {
 		return address;
 	}
-
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
-	
-	
+	public SchoolRequest(String schoolName, long contactNo, String emailId, String address) {
+		super();
+		
+		this.schoolName = schoolName;
+		this.contactNo = contactNo;
+		this.emailId = emailId;
+		this.address = address;
+	}
+	public SchoolRequest() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	
 }

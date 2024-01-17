@@ -36,6 +36,8 @@ public class UserServiceImpl implements UserService{
 		user.setContactNo(userrequest.getContactNo());
 		user.setUserRole(userrequest.getUserRole());
 		user.setPassword(userrequest.getPassword());
+		
+		
 		return user;
 	}
 
@@ -48,7 +50,8 @@ public class UserServiceImpl implements UserService{
 		userresponse.setLastName(user.getLastName());
 		userresponse.setEmail(user.getEmail());
 		userresponse.setContactNo(user.getContactNo());
-       userresponse.setUserRole(user.getUserRole());;
+       userresponse.setUserRole(user.getUserRole());
+       userresponse.setIsDeleted(user.getIsDeleted());
 		
 		return userresponse;
 	}
@@ -83,7 +86,9 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public ResponseEntity<ResponseStructure<UserResponse>> deleteRegisterdUser(int userId) {
 		User existinguser=userRepo.findById(userId).orElseThrow(()-> new UserNotFoundException("user not Found!!"));
+		
 		userRepo.delete(existinguser);
+		existinguser.setIsDeleted(true);
 		structure.setStatus(HttpStatus.OK.value());
 		structure.setMessage("RegisteredUser Data deleted Successfully");
 	    structure.setData(mapToUserResponse(existinguser));

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.school.sba.Entity.User;
@@ -36,7 +37,10 @@ public class UserController {
 	
 	@DeleteMapping("/users/{userId}")
 	public ResponseEntity<ResponseStructure<UserResponse>> deleteRegisteredUser(@PathVariable int userId) {
+
 		return userService.deleteRegisterdUser(userId);
 	}
+	
+
 
 }

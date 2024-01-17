@@ -2,16 +2,15 @@ package com.school.sba.Service;
 
 import org.springframework.http.ResponseEntity;
 import com.school.sba.Entity.School;
+import com.school.sba.requestdto.SchoolRequest;
+import com.school.sba.responsedto.SchoolResponse;
+import com.school.sba.responsedto.UserResponse;
 import com.school.sba.util.ResponseStructure;
 
 
 public interface SchoolService {
-	
-	public ResponseEntity<ResponseStructure<School>> saveSchool(School school);
 
-	public ResponseEntity<ResponseStructure<School>> findSchool(int schoolId);
+	ResponseEntity<ResponseStructure<SchoolResponse>> saveSchool(int userId,SchoolRequest school);
 	
-	public ResponseEntity<ResponseStructure<School>>  updateSchool(int schoolId,School school);
-
-	public ResponseEntity<ResponseStructure<School>>  deleteSchool(int schoolId);
+	
 }

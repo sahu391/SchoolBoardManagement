@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class User {
@@ -22,11 +23,24 @@ public class User {
 	private String lastName;
 	private long contactNo;
 	
+	private Boolean isDeleted;
+	
 	@Column(unique = true)
 	private String email;
 	private UserRole userRole;
 	
+	@ManyToOne
+	private School school;
 	
+	
+	
+	
+	public School getSchool() {
+		return school;
+	}
+	public void setSchool(School school) {
+		this.school = school;
+	}
 	public int getUserId() {
 		return userId;
 	}
@@ -75,5 +89,12 @@ public class User {
 	public void setUserRole(UserRole userRole) {
 		this.userRole = userRole;
 	}
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
 	
 }

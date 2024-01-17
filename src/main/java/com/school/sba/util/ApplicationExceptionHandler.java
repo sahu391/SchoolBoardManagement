@@ -43,6 +43,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler{
 		return structure(HttpStatus.NOT_FOUND,ex.getMessage(),"Only one user can exists as Admin");
 	}
 	
+	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {

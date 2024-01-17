@@ -68,10 +68,16 @@ public class UserRequest {
     public void setUserRole(UserRole userRole) {
 		this.userRole = userRole;
 	}
-
-    public UserRequest(
+     
+    public UserRequest() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public UserRequest(
 			@Pattern(regexp = "^[a-zA-Z0-9]+$", message = "username mustcontain altleat 8 t0 20 characters with no specialcharacters") String userName,
-			String password, String firstName, String lastName, long contactNo, String email, UserRole userRole) {
+			String password, String firstName, String lastName, long contactNo, String email, UserRole userRole
+		) {
 		super();
 		this.userName = userName;
 		this.password = password;
@@ -80,12 +86,7 @@ public class UserRequest {
 		this.contactNo = contactNo;
 		this.email = email;
 		this.userRole = userRole;
-	}
-    
-    
-    public UserRequest() {
-		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	
