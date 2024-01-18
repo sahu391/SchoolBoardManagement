@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 
 @Entity
@@ -21,6 +22,17 @@ public class School {
 	private String emailId;
 	private String address;
 	
+	@OneToOne
+	private Schedule schedule;
+	
+
+	public Schedule getSchedule() {
+		return schedule;
+	}
+
+	public void setSchedule(Schedule schedule) {
+		this.schedule = schedule;
+	}
 
 	public int getSchoolId() {
 		return schoolId;

@@ -1,30 +1,19 @@
-package com.school.sba.Entity;
+package com.school.sba.responsedto;
 
 import java.time.Duration;
 import java.time.LocalTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-
-@Entity
-public class Schedule {
+public class ScheduleResponse {
 	
-	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int scheduleId;
 	private LocalTime opensAt;
 	private LocalTime closesAt;
 	private int classHoursPerDay;
-	private Duration classHourLengthInMinutes;
+	private int classHourLengthInMinutes;
 	private LocalTime breakTime;
-	private Duration breakLength;
+	private int breakLength;
 	private LocalTime lunchTime;
-	private Duration lunchLength;
-	
-	
+	private int lunchLength;
 	public int getScheduleId() {
 		return scheduleId;
 	}
@@ -49,10 +38,10 @@ public class Schedule {
 	public void setClassHoursPerDay(int classHoursPerDay) {
 		this.classHoursPerDay = classHoursPerDay;
 	}
-	public Duration getClassHourLengthInMinutes() {
+	public int getClassHourLengthInMinutes() {
 		return classHourLengthInMinutes;
 	}
-	public void setClassHourLengthInMinutes(Duration classHourLengthInMinutes) {
+	public void setClassHourLengthInMinutes(int classHourLengthInMinutes) {
 		this.classHourLengthInMinutes = classHourLengthInMinutes;
 	}
 	public LocalTime getBreakTime() {
@@ -61,10 +50,10 @@ public class Schedule {
 	public void setBreakTime(LocalTime breakTime) {
 		this.breakTime = breakTime;
 	}
-	public Duration getBreakLength() {
+	public int getBreakLength() {
 		return breakLength;
 	}
-	public void setBreakLength(Duration breakLength) {
+	public void setBreakLength(int breakLength) {
 		this.breakLength = breakLength;
 	}
 	public LocalTime getLunchTime() {
@@ -73,17 +62,29 @@ public class Schedule {
 	public void setLunchTime(LocalTime lunchTime) {
 		this.lunchTime = lunchTime;
 	}
-	public Duration getLunchLength() {
+	public int getLunchLength() {
 		return lunchLength;
 	}
-	public void setLunchLength(Duration lunchLength) {
+	public void setLunchLength(int lunchLength) {
 		this.lunchLength = lunchLength;
 	}
-	
-	
+	public ScheduleResponse(int scheduleId, LocalTime opensAt, LocalTime closesAt, int classHoursPerDay,
+			int classHourLengthInMinutes, LocalTime breakTime, int breakLength, LocalTime lunchTime,
+			int lunchLength) {
+		super();
+		this.scheduleId = scheduleId;
+		this.opensAt = opensAt;
+		this.closesAt = closesAt;
+		this.classHoursPerDay = classHoursPerDay;
+		this.classHourLengthInMinutes = classHourLengthInMinutes;
+		this.breakTime = breakTime;
+		this.breakLength = breakLength;
+		this.lunchTime = lunchTime;
+		this.lunchLength = lunchLength;
+	}
+	public ScheduleResponse() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-	
-	
-	
-	
 }
