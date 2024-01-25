@@ -9,7 +9,7 @@ public class UserResponse {
 	private long contactNo;
 	private String email;
 	private UserRole userRole;
-	private Boolean isDeleted;
+	
 	
 	public int getUserId() {
 		return userId;
@@ -55,16 +55,11 @@ public class UserResponse {
 		this.userRole = userRole;
 	}
 	
-	public Boolean getIsDeleted() {
-		return isDeleted;
-	}
-	public void setIsDeleted(Boolean isDeleted) {
-		this.isDeleted = isDeleted;
-	}
+	
 	
 	
 	public UserResponse(int userId, String userName, String firstName, String lastName, long contactNo, String email,
-			UserRole userRole, Boolean isDeleted) {
+			UserRole userRole) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
@@ -73,7 +68,7 @@ public class UserResponse {
 		this.contactNo = contactNo;
 		this.email = email;
 		this.userRole = userRole;
-		this.isDeleted = isDeleted;
+		
 	}
 	public UserResponse() {
 		super();

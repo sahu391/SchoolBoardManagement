@@ -25,6 +25,18 @@ public class School {
 	@OneToOne
 	private Schedule schedule;
 	
+	@OneToMany
+	private List<AcademicProgram> prog =new ArrayList<AcademicProgram>();
+	
+	
+
+	public List<AcademicProgram> getProg() {
+		return prog;
+	}
+
+	public void setProg(List<AcademicProgram> prog) {
+		this.prog = prog;
+	}
 
 	public Schedule getSchedule() {
 		return schedule;
