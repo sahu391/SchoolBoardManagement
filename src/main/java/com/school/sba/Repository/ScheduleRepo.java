@@ -7,4 +7,6 @@ import com.school.sba.Entity.Schedule;
 @Repository
 public interface ScheduleRepo extends JpaRepository<Schedule, Integer> {
 
+	Schedule findByScheduleId(int scheduleId);
+
 }

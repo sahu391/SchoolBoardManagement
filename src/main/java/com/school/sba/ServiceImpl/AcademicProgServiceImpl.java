@@ -5,19 +5,29 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.school.sba.Entity.AcademicProgram;
 import com.school.sba.Entity.School;
 import com.school.sba.Entity.Subject;
+import com.school.sba.Entity.User;
+import com.school.sba.Exception.AcademicProgamNotFoundException;
 import com.school.sba.Exception.SchoolNotFoundException;
+import com.school.sba.Exception.SubjectNotFoundException;
+import com.school.sba.Exception.TeacherNotFoundException;
+import com.school.sba.Exception.UserNotFoundException;
 import com.school.sba.Repository.AcademicProgRepo;
 import com.school.sba.Repository.SchoolRepo;
+import com.school.sba.Repository.SubjectRepo;
+import com.school.sba.Repository.UserRepository;
 import com.school.sba.Service.AcademicProgService;
+import com.school.sba.enums.UserRole;
 import com.school.sba.requestdto.AcademicProgRequest;
 import com.school.sba.responsedto.AcademicProgResponse;
 import com.school.sba.responsedto.SubjectResponse;
+import com.school.sba.responsedto.UserResponse;
 import com.school.sba.util.ResponseStructure;
 
 @Service
@@ -26,18 +36,27 @@ public class AcademicProgServiceImpl implements AcademicProgService{
 	
 	@Autowired
 	private AcademicProgRepo AcademicProgRepo;
-
-
 	@Autowired
 	private SchoolRepo SchoolRepo;
-
-
+	@Autowired
+	private SubjectRepo subjectrepo;
+	@Autowired
+	private UserRepository userrepo;
 	@Autowired
 	private ResponseStructure<AcademicProgResponse> responseStructure;
-
 	@Autowired
 	private ResponseStructure<List<AcademicProgResponse>> ListResponseStructure;
-
+	
+	
+	 public Subject getSubjectByName(String subjectName) {
+	        return subjectrepo.findBySubjectName(subjectName)
+	                .orElseThrow(() -> new SubjectNotFoundException("Subject not found with name: " + subjectName));
+	    }
+	 
+	 public User getUserByUserName(String userName) {
+	        return userrepo.findByUserName(userName)
+	                .orElseThrow(() -> new UserNotFoundException("User not found with username: " + userName));
+	    }
 	public AcademicProgram mapToAcademicProgram(AcademicProgRequest request) {
 		AcademicProgram res =new AcademicProgram();
 		res.setProgramName(request.getProgramName());
@@ -107,6 +126,37 @@ public class AcademicProgServiceImpl implements AcademicProgService{
 		
 	}
 
-	
-	
+	@Override
+	public ResponseEntity<ResponseStructure<AcademicProgResponse>> addTeacherToProgram(int programId,
+			String userName,String subjectName)
+	{
+		 AcademicProgram academicProgram = AcademicProgRepo.findById(programId)
+	                .orElseThrow(() -> new AcademicProgamNotFoundException("AcademicProgram not found with id: " + programId));
+
+	        Subject subject = getSubjectByName(subjectName);
+	        User user = getUserByUserName(userName);
+
+	        if (user.getUserRole() != UserRole.TEACHER) {
+	            throw new TeacherNotFoundException("User " + user.getUserName() + " is not a teacher.");
+	        }
+
+	        if (!user.getSubject().equals(subject)) {
+	            throw new TeacherNotFoundException("Teacher " + user.getUserName() +
+	                    " is not qualified to teach the subject " + subject.getSubjectName());
+	        }
+
+	        // Add the teacher to the academic program
+	        academicProgram.getUser().add(user);
+	        AcademicProgRepo.save(academicProgram);
+	        
+	        responseStructure.setStatus(HttpStatus.CREATED.value());
+			responseStructure.setMessage("Teacher added to each subject successfully");
+			responseStructure.setData(mapToAcademicProgramResponse(academicProgram));
+			return new ResponseEntity<ResponseStructure<AcademicProgResponse>>(responseStructure,HttpStatus.CREATED);
+
+		}
 }
+
+
+
+

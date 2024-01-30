@@ -13,7 +13,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-
+import jakarta.persistence.OneToMany;
+import lombok.Getter;
+import lombok.Setter;
+@Getter
+@Setter
 @Entity
 public class AcademicProgram {
 	
@@ -33,6 +37,9 @@ public class AcademicProgram {
 	
 	@ManyToMany
 	private List<Subject> subject;
+	
+	@OneToMany
+	private List<ClassHour> classHourList;;
 	
 	
 	

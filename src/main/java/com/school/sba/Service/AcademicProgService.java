@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import com.school.sba.Entity.Subject;
 import com.school.sba.requestdto.AcademicProgRequest;
 import com.school.sba.responsedto.AcademicProgResponse;
+import com.school.sba.responsedto.UserResponse;
 import com.school.sba.util.ResponseStructure;
 
 public interface AcademicProgService {
@@ -16,6 +17,9 @@ public interface AcademicProgService {
 			AcademicProgRequest academicProgramRequest);
 
 	ResponseEntity<ResponseStructure<List<AcademicProgResponse>>> findAcademicProgram(int schoolId);
+
+	ResponseEntity<ResponseStructure<AcademicProgResponse>> addTeacherToProgram(int programId, String subjectName,
+			String userName);
 
 	
 

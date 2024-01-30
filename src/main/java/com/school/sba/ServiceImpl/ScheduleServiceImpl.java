@@ -129,7 +129,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 		structure.setStatus(HttpStatus.OK.value());
 		structure.setMessage("Schedule for school updated successfully");
 		structure.setData(mapToScheduleResponse(schedule));
-		return new ResponseEntity<ResponseStructure<ScheduleResponse>>(structure,HttpStatus.CREATED);
+		return new ResponseEntity<ResponseStructure<ScheduleResponse>>(structure,HttpStatus.OK);
 		
 	}
 	

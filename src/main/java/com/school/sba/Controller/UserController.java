@@ -68,9 +68,5 @@ public class UserController {
 		return userService.addSubjectToTheTeacher(subjectId,userId);
 	}
 	
-	@PostMapping("/academic-programs/{programId}/users/{userId}")
-	public ResponseEntity<ResponseStructure<UserResponse>> addTeacherToProgram(@PathVariable int userId,@RequestBody Subject subject)
-	{
-		return userService.addTeacherToProgram(userId,subject);
-	}
+	
 }

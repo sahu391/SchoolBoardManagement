@@ -25,7 +25,7 @@ public interface UserService {
 
 	ResponseEntity<ResponseStructure<UserResponse>> addSubjectToTheTeacher(int subjectId, int userId);
 
-	ResponseEntity<ResponseStructure<UserResponse>> addTeacherToProgram(int userId, Subject subject);
+	
 
 	
 

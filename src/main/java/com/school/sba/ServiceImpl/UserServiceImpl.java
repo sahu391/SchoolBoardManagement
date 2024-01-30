@@ -115,7 +115,8 @@ public class UserServiceImpl implements UserService{
 		User user = userrepo.save(mapToUser(userrequest));	
 		if (userrequest.getUserRole() == UserRole.TEACHER || userrequest.getUserRole() ==UserRole.STUDENT) {
 		user.setSchool(adminSchool);
-		}	
+		}
+		User saveuser=userrepo.save(user);
 		structure.setStatus(HttpStatus.CREATED.value());
 		structure.setMessage("User Registered Successfully");
 	    structure.setData(mapToUserResponse(user));
@@ -217,11 +218,6 @@ public class UserServiceImpl implements UserService{
 		}
 	}
 
-	@Override
-	public ResponseEntity<ResponseStructure<UserResponse>> addTeacherToProgram(int userId, Subject subject) {
-		
-		return null;
-	}
 
 	
 

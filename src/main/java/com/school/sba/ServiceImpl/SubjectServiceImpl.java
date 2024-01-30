@@ -2,13 +2,16 @@ package com.school.sba.ServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.school.sba.Entity.AcademicProgram;
 import com.school.sba.Entity.Subject;
 import com.school.sba.Exception.AcademicProgamNotFoundException;
 import com.school.sba.Exception.IllegalException;
@@ -109,12 +112,36 @@ public class SubjectServiceImpl implements SubjectService{
 	
 	@Override
 	public ResponseEntity<ResponseStructure<AcademicProgResponse>> updateSubjects(int programId,
-			SubjectRequest subjectreq) {
-		
-		return null;
-	}
+			 SubjectRequest subjectreq) {
+
+        
+		 AcademicProgram academicProgram = academicrepo.findById(programId)
+	                .orElseThrow(() -> new RuntimeException("Academic program not found"));
+
+	        List<Subject> existingSubjects = academicProgram.getSubject();
+
+	        for (String subjectnames :subjectreq.getSubjectName() ) {
+	        	Optional<Subject> existingSubject = subjectrepo.findBySubjectName(subjectnames);
+
+	            if (existingSubject.isPresent()) {
+	                if (!existingSubjects.contains(existingSubject.get())) {
+	                    existingSubjects.add(existingSubject.get());
+	                }
+	            } else {
+	                Subject newSubject = new Subject();
+	                newSubject.setSubjectName(subjectnames);
+	                subjectrepo.save(newSubject);
+	                existingSubjects.add(newSubject);
+	            }
+	        }
+
+	        academicrepo.save(academicProgram);
+	        structure.setStatus(HttpStatus.OK.value());
+			structure.setMessage("updated the subject list to academic program");
+			structure.setData(academicProgramServiceImpl.mapToAcademicProgramResponse(academicProgram));
+			return new ResponseEntity<ResponseStructure<AcademicProgResponse>>(structure,HttpStatus.OK); 
+	    }
+
 	
+
 }
-
-
-
