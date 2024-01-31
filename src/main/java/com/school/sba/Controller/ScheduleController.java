@@ -40,4 +40,6 @@ public class ScheduleController {
 	public ResponseEntity<ResponseStructure<ScheduleResponse>> updateSchedule(@PathVariable int scheduleId,@RequestBody ScheduleRequest schedulereq) {
 		return service.updateSchedule(scheduleId,schedulereq);
 	}
+	
+	
 }

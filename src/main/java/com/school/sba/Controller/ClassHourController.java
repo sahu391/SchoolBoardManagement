@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,14 +25,19 @@ public class ClassHourController {
 	@Autowired
 	private ClassHourService service;
 	
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping("/academic-program/{programId}/class-hours")
 	public ResponseEntity<ResponseStructure<ClassHourResponse>> generateClassHour(@PathVariable int programId){
 		return service.generateClassHour(programId);
 	}
 	
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@PutMapping("/class-hours")
 	public ResponseEntity<String> updateClassHour(@RequestBody List<ClassHourDTO> classHourDTOList){
 		return service.updateClassHour(classHourDTOList);
 		 
 	}
+	
+	
+	
 }

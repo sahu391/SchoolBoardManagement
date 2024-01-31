@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.school.sba.Entity.Subject;
+import com.school.sba.enums.UserRole;
 import com.school.sba.requestdto.AcademicProgRequest;
 import com.school.sba.responsedto.AcademicProgResponse;
 import com.school.sba.responsedto.UserResponse;
@@ -20,6 +21,10 @@ public interface AcademicProgService {
 
 	ResponseEntity<ResponseStructure<AcademicProgResponse>> addTeacherToProgram(int programId, String subjectName,
 			String userName);
+
+	ResponseEntity<ResponseStructure<AcademicProgResponse>> deleteByProgramId(int programId);
+
+	
 
 	
 

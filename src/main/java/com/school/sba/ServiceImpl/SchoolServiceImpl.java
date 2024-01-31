@@ -35,6 +35,8 @@ public class SchoolServiceImpl implements SchoolService{
 	@Autowired
 	private UserRepository userrepo;
 	
+
+	
 	@Autowired
 	private SchoolRepo schoolrepo;
 	
@@ -119,6 +121,7 @@ public class SchoolServiceImpl implements SchoolService{
 	@Override
 	public ResponseEntity<ResponseStructure<List<SchoolResponse>>> findAllSchool() {
 		{
+			
 			List<School> findAll = schoolrepo.findAll();
 
 			List<SchoolResponse> collect = findAll.stream()
@@ -134,16 +137,17 @@ public class SchoolServiceImpl implements SchoolService{
 		}
 	}
 
-
+// softdelete
 	@Override
 	public ResponseEntity<ResponseStructure<SchoolResponse>> deleteSchool(int schoolId) {
-		School save = schoolrepo.findById(schoolId)
+		School deletedschool = schoolrepo.findById(schoolId)
 				.orElseThrow(()->new SchoolNotFoundException("School Not Found"));
-
+		deletedschool.setDeleted(true);
+		schoolrepo.save(deletedschool);
 
 		structure.setStatus(HttpStatus.OK.value());
 		structure.setMessage("school deleted");
-		structure.setData(mapToSchoolResponse(save));
+		structure.setData(mapToSchoolResponse(deletedschool));
 
 		return new ResponseEntity<ResponseStructure<SchoolResponse>>(structure,HttpStatus.OK);
 	}

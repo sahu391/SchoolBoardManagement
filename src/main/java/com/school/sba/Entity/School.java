@@ -9,9 +9,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 
 public class School {
 	@Id
@@ -21,6 +27,7 @@ public class School {
 	private long contactNo;
 	private String emailId;
 	private String address;
+	private boolean isDeleted;
 	
 	@OneToOne
 	private Schedule schedule;
@@ -84,6 +91,14 @@ public class School {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 	

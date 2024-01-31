@@ -48,15 +48,18 @@ public class AcademicProgServiceImpl implements AcademicProgService{
 	private ResponseStructure<List<AcademicProgResponse>> ListResponseStructure;
 	
 	
-	 public Subject getSubjectByName(String subjectName) {
-	        return subjectrepo.findBySubjectName(subjectName)
-	                .orElseThrow(() -> new SubjectNotFoundException("Subject not found with name: " + subjectName));
-	    }
+	
+//	 public Subject getSubjectByName(String subjectName) {
+//	        return subjectrepo.findBySubjectName(subjectName)
+//	                .orElseThrow(() -> new SubjectNotFoundException("Subject not found with name: " + subjectName));
+//	    }
+//	 
+//	 public User getUserByUserName(String userName) {
+//	        return userrepo.findByUserName(userName)
+//	                .orElseThrow(() -> new UserNotFoundException("User not found with username: " + userName));
+//	    }
 	 
-	 public User getUserByUserName(String userName) {
-	        return userrepo.findByUserName(userName)
-	                .orElseThrow(() -> new UserNotFoundException("User not found with username: " + userName));
-	    }
+	 
 	public AcademicProgram mapToAcademicProgram(AcademicProgRequest request) {
 		AcademicProgram res =new AcademicProgram();
 		res.setProgramName(request.getProgramName());
@@ -133,8 +136,10 @@ public class AcademicProgServiceImpl implements AcademicProgService{
 		 AcademicProgram academicProgram = AcademicProgRepo.findById(programId)
 	                .orElseThrow(() -> new AcademicProgamNotFoundException("AcademicProgram not found with id: " + programId));
 
-	        Subject subject = getSubjectByName(subjectName);
-	        User user = getUserByUserName(userName);
+	        Subject subject = subjectrepo.findBySubjectName(subjectName)
+	                .orElseThrow(() -> new SubjectNotFoundException("Subject not found with name: " + subjectName));
+	        User user = userrepo.findByUserName(userName)
+	                .orElseThrow(() -> new UserNotFoundException("User not found with username: " + userName));
 
 	        if (user.getUserRole() != UserRole.TEACHER) {
 	            throw new TeacherNotFoundException("User " + user.getUserName() + " is not a teacher.");
@@ -144,9 +149,8 @@ public class AcademicProgServiceImpl implements AcademicProgService{
 	            throw new TeacherNotFoundException("Teacher " + user.getUserName() +
 	                    " is not qualified to teach the subject " + subject.getSubjectName());
 	        }
-
-	        // Add the teacher to the academic program
-	        academicProgram.getUser().add(user);
+	        
+	        	academicProgram.getUser().add(user);// Add the teacher to the academic program
 	        AcademicProgRepo.save(academicProgram);
 	        
 	        responseStructure.setStatus(HttpStatus.CREATED.value());
@@ -155,6 +159,24 @@ public class AcademicProgServiceImpl implements AcademicProgService{
 			return new ResponseEntity<ResponseStructure<AcademicProgResponse>>(responseStructure,HttpStatus.CREATED);
 
 		}
+	//soft delete
+	@Override
+	public ResponseEntity<ResponseStructure<AcademicProgResponse>> deleteByProgramId(int programId) {
+		AcademicProgram program = AcademicProgRepo.findById(programId)
+				.orElseThrow(()->new AcademicProgamNotFoundException("No Academic Program in the entered programId "+ programId));
+
+		
+		 program.setDeleted(true);
+		 AcademicProgRepo.save(program);
+		
+	   responseStructure.setStatus(HttpStatus.OK.value());
+	    responseStructure.setMessage("Academic  program deleted successfully");
+	    responseStructure.setData(mapToAcademicProgramResponse(program));
+
+
+		return new  ResponseEntity<ResponseStructure<AcademicProgResponse>>(responseStructure,HttpStatus.OK);
+	}
+
 }
 
 

@@ -1,5 +1,8 @@
 package com.school.sba.ServiceImpl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,7 @@ import com.school.sba.Entity.User;
 import com.school.sba.Exception.AcademicProgamNotFoundException;
 import com.school.sba.Exception.AdmineCannotBeAssignedToAcademicProgram;
 import com.school.sba.Exception.DuplicateAdminException;
+import com.school.sba.Exception.IllegalException;
 import com.school.sba.Exception.OnlyTeacherCanBeAssignedToSubjectException;
 import com.school.sba.Exception.SchoolNotFoundException;
 import com.school.sba.Exception.SubjectNotFoundException;
@@ -24,6 +28,8 @@ import com.school.sba.Repository.UserRepository;
 import com.school.sba.Service.UserService;
 import com.school.sba.enums.UserRole;
 import com.school.sba.requestdto.UserRequest;
+import com.school.sba.responsedto.AcademicProgResponse;
+import com.school.sba.responsedto.SchoolResponse;
 import com.school.sba.responsedto.UserResponse;
 import com.school.sba.util.ResponseStructure;
 
@@ -42,6 +48,11 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private ResponseStructure<UserResponse> structure;
+	
+	@Autowired
+	private ResponseStructure<List<UserResponse>> liststructure;
+	
+	
 	
 
 	
@@ -76,6 +87,8 @@ public class UserServiceImpl implements UserService{
 		
 		return userresponse;
 	}
+	
+	
 	
 	private School findAdminSchool() {
 		User admin =userrepo.findByUserRole(UserRole.ADMIN);
@@ -137,25 +150,21 @@ public class UserServiceImpl implements UserService{
 		return new ResponseEntity<ResponseStructure<UserResponse>>(structure, HttpStatus.CREATED);
 	}
 
+	//soft delete
 	@Override
 	public ResponseEntity<ResponseStructure<UserResponse>> deleteRegisterdUser(int userId) {
 		User user = userrepo.findById(userId)
 				.orElseThrow(()->new UserNotFoundException("user not found"));
 
-		if(user.getIsDeleted()==true)
-		{
-			throw new UserNotFoundException("user not found");
-		}
-
-		user.setIsDeleted(false);
-		User save = userrepo.save(user);
+		 user.setIsDeleted(true);
+		 userrepo.save(user);
 		
 		
 
 
 		structure.setStatus(HttpStatus.OK.value());
 		structure.setMessage("user deleted successfully");
-	structure.setData(mapToUserResponse(save));
+	structure.setData(mapToUserResponse(user));
 
 
 		return new  ResponseEntity<ResponseStructure<UserResponse>>(structure,HttpStatus.OK);
@@ -217,6 +226,35 @@ public class UserServiceImpl implements UserService{
 			}
 		}
 	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<List<UserResponse>>> fetchUserByUserRole(int programId,String role) {
+		UserRole userrole=UserRole.valueOf(role.toUpperCase());
+	    if(userrole == UserRole.ADMIN) {
+	         throw new IllegalException("Academic program will not be assigned to admin");
+	        }
+	    
+		 List<User> users = userrepo.findByProgProgramIdAndUserRole(programId, userrole);
+		 
+		 List<UserResponse> collect = users.stream()
+					.map(u-> mapToUserResponse(u))
+					.collect(Collectors.toList());
+		
+		 if (users.isEmpty()) {
+	           throw new IllegalException("no users found in this programId "+programId);
+	        }
+
+		 liststructure.setStatus(HttpStatus.FOUND.value());
+			liststructure.setMessage("Users fetched successfully based on userrole");
+			liststructure.setData(collect);
+
+			return new ResponseEntity<ResponseStructure<List<UserResponse>>>(liststructure,HttpStatus.FOUND); 
+		
+	}
+
+	
+
+
 
 
 	

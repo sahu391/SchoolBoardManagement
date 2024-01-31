@@ -132,6 +132,13 @@ public class ScheduleServiceImpl implements ScheduleService{
 		return new ResponseEntity<ResponseStructure<ScheduleResponse>>(structure,HttpStatus.OK);
 		
 	}
+
+	
+	public ResponseEntity<String> deleteSchedule(Schedule schedule) {
+		
+		repo.delete(schedule);
+		return ResponseEntity.ok("Schedule deleted successfully.");
+	}
 	
 	
 }

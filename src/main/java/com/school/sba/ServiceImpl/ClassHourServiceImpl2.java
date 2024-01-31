@@ -199,6 +199,14 @@ public class ClassHourServiceImpl2 implements ClassHourService {
 	        }
 	    }
 
+	
+		public ResponseEntity<String> deleteClassHour(List<ClassHour> classHour) {
+			 for (ClassHour classhour : classHour) {
+			classHourRepository.delete(classhour);
+			 }
+			return ResponseEntity.ok("Class hours deleted successfully.");
+		}
+
    
 
 }		

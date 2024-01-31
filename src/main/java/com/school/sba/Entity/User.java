@@ -12,9 +12,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 	
 	@Id
@@ -117,27 +122,7 @@ public class User {
 	public void setIsDeleted(Boolean isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-	public User(int userId, String userName, String password, String firstName, String lastName, long contactNo,
-			Boolean isDeleted, String email, UserRole userRole, School school, List<AcademicProgram> prog,
-			Subject subject) {
-		super();
-		this.userId = userId;
-		this.userName = userName;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.contactNo = contactNo;
-		this.isDeleted = isDeleted;
-		this.email = email;
-		this.userRole = userRole;
-		this.school = school;
-		this.prog = prog;
-		this.subject = subject;
-	}
-	public User() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	
 	
 	
 }

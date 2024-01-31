@@ -14,11 +14,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AcademicProgram {
 	
 	@Id 
@@ -28,6 +34,7 @@ public class AcademicProgram {
 	private LocalDate beginsAt;
 	private LocalDate endsAt;
 	private ProgramType programType;
+	private boolean isDeleted;
 	
 	@ManyToOne
 	private School school;

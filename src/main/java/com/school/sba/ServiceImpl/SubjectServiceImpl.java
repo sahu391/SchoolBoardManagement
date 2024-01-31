@@ -13,14 +13,17 @@ import org.springframework.stereotype.Service;
 
 import com.school.sba.Entity.AcademicProgram;
 import com.school.sba.Entity.Subject;
+import com.school.sba.Entity.User;
 import com.school.sba.Exception.AcademicProgamNotFoundException;
 import com.school.sba.Exception.IllegalException;
+import com.school.sba.Exception.UserNotFoundException;
 import com.school.sba.Repository.AcademicProgRepo;
 import com.school.sba.Repository.SubjectRepo;
 import com.school.sba.Service.SubjectService;
 import com.school.sba.requestdto.SubjectRequest;
 import com.school.sba.responsedto.AcademicProgResponse;
 import com.school.sba.responsedto.SubjectResponse;
+import com.school.sba.responsedto.UserResponse;
 import com.school.sba.util.ResponseStructure;
 
 @Service
@@ -34,6 +37,9 @@ public class SubjectServiceImpl implements SubjectService{
 	private ResponseStructure<AcademicProgResponse> structure;
 	@Autowired
 	private ResponseStructure<List<SubjectResponse>>  responsestructure;
+	
+	@Autowired
+	private ResponseStructure<SubjectResponse> subjectstructure;
 	@Autowired
 	private AcademicProgServiceImpl academicProgramServiceImpl;
 	
@@ -142,6 +148,8 @@ public class SubjectServiceImpl implements SubjectService{
 			return new ResponseEntity<ResponseStructure<AcademicProgResponse>>(structure,HttpStatus.OK); 
 	    }
 
+
+	
 	
 
 }
