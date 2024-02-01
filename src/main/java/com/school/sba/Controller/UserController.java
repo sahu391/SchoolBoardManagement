@@ -52,9 +52,9 @@ public class UserController {
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@DeleteMapping("/users/{userId}")
-	public ResponseEntity<ResponseStructure<UserResponse>> deleteRegisteredUser(@PathVariable int userId) {
+	public ResponseEntity<ResponseStructure<UserResponse>> softDeleteRegisteredUser(@PathVariable int userId) {
 
-		return userService.deleteRegisterdUser(userId);
+		return userService.softDeleteRegisterdUser(userId);
 	}
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
@@ -77,4 +77,6 @@ public class UserController {
 	{
 		return userService.fetchUserByUserRole(programId,role);
 	}
+	
+	
 }

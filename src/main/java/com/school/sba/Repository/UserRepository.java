@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.school.sba.Entity.User;
 import com.school.sba.enums.UserRole;
-@Repository
+
 public interface UserRepository extends JpaRepository<User, Integer>{
 
 	public boolean existsByUserRole(UserRole userrole);
@@ -18,6 +18,8 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	User findByUserRole(UserRole userRole);
 	
 	List<User> findByProgProgramIdAndUserRole(int programId, UserRole userRole);
+
+	 List<User> findByIsDeleted(boolean isDeleted);
 	
 	
 }

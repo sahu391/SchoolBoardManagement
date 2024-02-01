@@ -7,7 +7,9 @@ import java.util.List;
 
 import com.school.sba.enums.ProgramType;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -39,13 +41,13 @@ public class AcademicProgram {
 	@ManyToOne
 	private School school;
 	
-	@ManyToMany
+	@ManyToMany( mappedBy = "prog",fetch  = FetchType.EAGER,cascade = CascadeType.ALL)
 	private List<User> user=new ArrayList<User>();
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Subject> subject;
 	
-	@OneToMany
+	@OneToMany(mappedBy = "proglist", fetch = FetchType.EAGER)
 	private List<ClassHour> classHourList;;
 	
 	

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,8 @@ import com.school.sba.enums.UserRole;
 import com.school.sba.requestdto.ClassHourDTO;
 import com.school.sba.responsedto.ClassHourResponse;
 import com.school.sba.util.ResponseStructure;
+
+import jakarta.transaction.Transactional;
 
 
 @Service
@@ -206,10 +209,48 @@ public class ClassHourServiceImpl2 implements ClassHourService {
 			 }
 			return ResponseEntity.ok("Class hours deleted successfully.");
 		}
+		
+		@Transactional
+		@Override
+		public ResponseEntity<String> generateClassHourForNextWeek() {
+			
+			  List<ClassHour> existingClassHours = classHourRepository.findAll();
+			  LocalDateTime currentDate = LocalDateTime.now();
+			  int day=1;
+		            LocalDateTime nextDay = currentDate.plusDays(day);
 
-   
+		            List<ClassHour> newClassHours = existingClassHours.stream()
+		                    .map(existingClassHour -> {
+		                        ClassHour newClassHour = new ClassHour();
+		                        newClassHour.setBeginsAt(nextDay.withHour(existingClassHour.getBeginsAt().getHour())
+		                                .withMinute(existingClassHour.getBeginsAt().getMinute()));
+		                        newClassHour.setEndsAt(nextDay.withHour(existingClassHour.getEndsAt().getHour())
+		                                .withMinute(existingClassHour.getEndsAt().getMinute()));
+		                        newClassHour.setRoomNo(existingClassHour.getRoomNo());
+		                        newClassHour.setClassStatus(existingClassHour.getClassStatus());
 
-}		
+		                        Subject existingSubject = existingClassHour.getSubject();
+		                        if (existingSubject != null) {
+		                           
+		                            Subject attachedSubject = subjectrepo.findById(existingSubject.getSubjectId())
+		                                    .orElseThrow(() -> new SubjectNotFoundException("Subject not found"));
+		                            newClassHour.setSubject(attachedSubject);
+		                        }
+
+		                        newClassHour.setProglist(existingClassHour.getProglist());
+		                        newClassHour.setUser(existingClassHour.getUser());
+		                        return newClassHour;
+		                    })
+		                    .collect(Collectors.toList());
+
+		           
+		            classHourRepository.saveAll(newClassHours);
+		            return ResponseEntity.ok("Class hours generated for next week successfully.");
+		    }
+		
+}	
+	
+
 	
 
 

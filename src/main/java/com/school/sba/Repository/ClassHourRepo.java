@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.school.sba.Entity.ClassHour;
 import com.school.sba.Entity.Subject;
-@Repository
+
 public interface ClassHourRepo extends JpaRepository<ClassHour, Integer>{
 
 	

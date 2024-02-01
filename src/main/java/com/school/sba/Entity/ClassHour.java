@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import com.school.sba.enums.ClassStatus;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,12 +31,12 @@ public class ClassHour {
 	private int roomNo;
 	private ClassStatus classStatus;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Subject subject;
 	
 	@ManyToOne
 	private AcademicProgram proglist;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private User user;
 }

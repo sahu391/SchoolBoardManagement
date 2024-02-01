@@ -1,6 +1,7 @@
 package com.school.sba.ServiceImpl;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,12 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.school.sba.Entity.AcademicProgram;
 import com.school.sba.Entity.School;
 import com.school.sba.Entity.User;
 import com.school.sba.Exception.DuplicateAdminException;
 import com.school.sba.Exception.InvalidUserRoleException;
 import com.school.sba.Exception.SchoolNotFoundException;
 import com.school.sba.Exception.UserNotFoundException;
+import com.school.sba.Repository.AcademicProgRepo;
 import com.school.sba.Repository.SchoolRepo;
 import com.school.sba.Repository.UserRepository;
 import com.school.sba.Service.SchoolService;
@@ -35,7 +38,8 @@ public class SchoolServiceImpl implements SchoolService{
 	@Autowired
 	private UserRepository userrepo;
 	
-
+	@Autowired
+	private AcademicProgRepo academicrepo;
 	
 	@Autowired
 	private SchoolRepo schoolrepo;
@@ -164,5 +168,29 @@ public class SchoolServiceImpl implements SchoolService{
 		structure.setData(mapToSchoolResponse(save));
 
 		return new ResponseEntity<ResponseStructure<SchoolResponse>>(structure,HttpStatus.FOUND);
+	}
+	
+	
+	
+	public void deleteSchoolIfDeleted() {
+	    List<School> schoolsToDelete = new ArrayList<>();
+
+	    for (School school : schoolrepo.findAll()) {
+	        if (school.isDeleted()) {
+	            for (User user : school.getUsers()) {
+	                user.setSchool(null);
+	            }
+	            userrepo.saveAll(school.getUsers());
+
+	            for (AcademicProgram academicProgram : school.getProg()) {
+	                academicProgram.setSchool(null);
+	            }
+	            academicrepo.saveAll(school.getProg());
+
+	            schoolsToDelete.add(school);
+	        }
+	    }
+
+	    schoolrepo.deleteAll(schoolsToDelete);
 	}
 }

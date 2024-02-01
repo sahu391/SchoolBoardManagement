@@ -10,8 +10,6 @@ import org.springframework.stereotype.Repository;
 import com.school.sba.Entity.Subject;
 
 
-
-@Repository
 public interface SubjectRepo extends JpaRepository<Subject, Integer> {
 
 	 Optional<Subject> findBySubjectName(String subjectName);

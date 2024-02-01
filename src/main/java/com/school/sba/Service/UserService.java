@@ -20,7 +20,7 @@ public interface UserService {
 
 	ResponseEntity<ResponseStructure<UserResponse>> findRegisterdUser(int userId);
 
-	ResponseEntity<ResponseStructure<UserResponse>> deleteRegisterdUser(int userId);
+	ResponseEntity<ResponseStructure<UserResponse>> softDeleteRegisterdUser(int userId);
 
 	ResponseEntity<ResponseStructure<UserResponse>> registerAdmin(@Valid UserRequest user);
 
@@ -29,6 +29,8 @@ public interface UserService {
 	ResponseEntity<ResponseStructure<UserResponse>> addSubjectToTheTeacher(int subjectId, int userId);
 
 	 ResponseEntity<ResponseStructure<List<UserResponse>>> fetchUserByUserRole(int programId,String role);
+
+	
 
 	
 

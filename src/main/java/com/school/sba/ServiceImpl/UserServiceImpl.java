@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.school.sba.Entity.AcademicProgram;
+import com.school.sba.Entity.ClassHour;
 import com.school.sba.Entity.School;
 import com.school.sba.Entity.Subject;
 import com.school.sba.Entity.User;
@@ -23,6 +24,7 @@ import com.school.sba.Exception.SubjectNotFoundException;
 import com.school.sba.Exception.TeacherNotFoundException;
 import com.school.sba.Exception.UserNotFoundException;
 import com.school.sba.Repository.AcademicProgRepo;
+import com.school.sba.Repository.ClassHourRepo;
 import com.school.sba.Repository.SubjectRepo;
 import com.school.sba.Repository.UserRepository;
 import com.school.sba.Service.UserService;
@@ -52,7 +54,8 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private ResponseStructure<List<UserResponse>> liststructure;
 	
-	
+	@Autowired
+	private ClassHourRepo classhourrepo;
 	
 
 	
@@ -68,7 +71,7 @@ public class UserServiceImpl implements UserService{
 		user.setContactNo(userrequest.getContactNo());
 		user.setUserRole(userrequest.getUserRole());
 		user.setPassword(passwordEncoder.encode(userrequest.getPassword()));
-		
+		user.setIsDeleted(false);
 		
 		return user;
 	}
@@ -152,7 +155,7 @@ public class UserServiceImpl implements UserService{
 
 	//soft delete
 	@Override
-	public ResponseEntity<ResponseStructure<UserResponse>> deleteRegisterdUser(int userId) {
+	public ResponseEntity<ResponseStructure<UserResponse>> softDeleteRegisterdUser(int userId) {
 		User user = userrepo.findById(userId)
 				.orElseThrow(()->new UserNotFoundException("user not found"));
 
@@ -252,14 +255,26 @@ public class UserServiceImpl implements UserService{
 		
 	}
 
+	public void deleteUserIfDeleted() {
+	    for (User user : userrepo.findAll()) {
+	        if (!UserRole.ADMIN.equals(user.getUserRole()) && Boolean.TRUE.equals(user.getIsDeleted())) {
+	            for (ClassHour classHour : user.getClassHours()) {
+	                classHour.setUser(null);
+	            }
+	            classhourrepo.saveAll(user.getClassHours());
+
+	            userrepo.delete(user);
+	        }
+	    }
+	}
 	
-
-
-
-
 	
-
-	
-	
-
 }
+
+
+	
+
+	
+	
+
+

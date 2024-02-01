@@ -5,22 +5,30 @@ import java.util.List;
 
 import com.school.sba.enums.UserRole;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class User {
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,22 +40,24 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private long contactNo;
-	
+	 
 	private Boolean isDeleted;
 	
 	@Column(unique = true)
 	private String email;
 	private UserRole userRole;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private School school;
 	
 	@ManyToMany
 	private List<AcademicProgram> prog=new ArrayList<AcademicProgram>();
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Subject subject;
 	
+	@OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+	private List<ClassHour> classHours;
 	
 	
 	public Subject getSubject() {
@@ -123,6 +133,11 @@ public class User {
 		this.isDeleted = isDeleted;
 	}
 	
-	
+	public List<ClassHour> getClassHours() {
+		return classHours;
+	}
+	public void setClassHours(List<ClassHour> classHours) {
+		this.classHours = classHours;
+	}
 	
 }

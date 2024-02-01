@@ -10,9 +10,11 @@ import com.school.sba.Entity.AcademicProgram;
 import com.school.sba.Entity.Subject;
 import com.school.sba.Entity.User;
 
-@Repository
+
 public interface AcademicProgRepo extends JpaRepository<AcademicProgram, Integer>{
 
 	Optional<User> findBySubject(Subject subject);
 	
+	
+	List<AcademicProgram> findByIsDeleted(boolean isDeleted);
 }

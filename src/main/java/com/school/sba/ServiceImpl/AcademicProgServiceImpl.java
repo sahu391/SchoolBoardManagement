@@ -19,6 +19,7 @@ import com.school.sba.Exception.SubjectNotFoundException;
 import com.school.sba.Exception.TeacherNotFoundException;
 import com.school.sba.Exception.UserNotFoundException;
 import com.school.sba.Repository.AcademicProgRepo;
+import com.school.sba.Repository.ClassHourRepo;
 import com.school.sba.Repository.SchoolRepo;
 import com.school.sba.Repository.SubjectRepo;
 import com.school.sba.Repository.UserRepository;
@@ -42,6 +43,8 @@ public class AcademicProgServiceImpl implements AcademicProgService{
 	private SubjectRepo subjectrepo;
 	@Autowired
 	private UserRepository userrepo;
+	@Autowired
+	private ClassHourRepo classhourrepo;
 	@Autowired
 	private ResponseStructure<AcademicProgResponse> responseStructure;
 	@Autowired
@@ -177,6 +180,26 @@ public class AcademicProgServiceImpl implements AcademicProgService{
 		return new  ResponseEntity<ResponseStructure<AcademicProgResponse>>(responseStructure,HttpStatus.OK);
 	}
 
+	
+	public void deleteAcademicProgramIfDeleted() {
+	    for (AcademicProgram academicProgram : AcademicProgRepo.findAll()) {
+	        if (academicProgram.isDeleted()) {
+	            // Deleting all the Class Hours related to the Academic Program
+	            if (!academicProgram.getClassHourList().isEmpty()) {
+	            	classhourrepo.deleteAll(academicProgram.getClassHourList());
+	            }
+
+	            // Unlinking Academic Program from Users
+	            for (User user : academicProgram.getUser()) {
+	                user.getProg().remove(academicProgram);
+	            }
+	            userrepo.saveAll(academicProgram.getUser());
+
+	            // Finally, delete the Academic Program
+	            AcademicProgRepo.delete(academicProgram);
+	        }
+	    }
+	}
 }
 
 

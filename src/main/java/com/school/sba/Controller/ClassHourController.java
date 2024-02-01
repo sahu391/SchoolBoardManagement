@@ -38,6 +38,11 @@ public class ClassHourController {
 		 
 	}
 	
-	
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@PostMapping("/class-hours")
+	public ResponseEntity<String> generateClassHourForNextWeek(){
+		return service.generateClassHourForNextWeek();
+		 
+	}
 	
 }

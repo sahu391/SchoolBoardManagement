@@ -3,6 +3,7 @@ package com.school.sba.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,11 +12,15 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 @Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class Subject {
 	
 	@Id 
@@ -29,6 +34,9 @@ public class Subject {
 
 	@OneToMany(mappedBy="subject")
 	private List<User> user = new ArrayList<User>();
+	
+	@OneToMany(mappedBy = "subject",cascade = CascadeType.ALL)
+	private List<ClassHour> classHours;
 
 	public int getSubjectId() {
 		return subjectId;
