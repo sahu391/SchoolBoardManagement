@@ -43,7 +43,7 @@ public class ScheduledJobs {
 		
 		//userservice.deleteUserIfDeleted();
 		//schoolservice.deleteSchoolIfDeleted();
-		//programservice.acadeleteAcademicProgramIfDeleted();
+		//programservice.deleteAcademicProgramIfDeleted();
 		
 	}
 	

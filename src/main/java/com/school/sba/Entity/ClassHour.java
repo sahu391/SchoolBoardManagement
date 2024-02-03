@@ -1,5 +1,6 @@
 package com.school.sba.Entity;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 
@@ -30,8 +31,9 @@ public class ClassHour {
 	private LocalDateTime endsAt;
 	private int roomNo;
 	private ClassStatus classStatus;
+	private DayOfWeek dayOfWeek;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private Subject subject;
 	
 	@ManyToOne

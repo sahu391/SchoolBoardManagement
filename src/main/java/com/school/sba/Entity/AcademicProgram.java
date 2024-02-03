@@ -44,7 +44,7 @@ public class AcademicProgram {
 	@ManyToMany( mappedBy = "prog",fetch  = FetchType.EAGER,cascade = CascadeType.ALL)
 	private List<User> user=new ArrayList<User>();
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany
 	private List<Subject> subject;
 	
 	@OneToMany(mappedBy = "proglist", fetch = FetchType.EAGER)

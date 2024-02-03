@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.school.sba.Entity.AcademicProgram;
+import com.school.sba.Entity.ClassHour;
 import com.school.sba.Entity.School;
 import com.school.sba.Entity.Subject;
 import com.school.sba.Entity.User;
@@ -30,6 +31,8 @@ import com.school.sba.responsedto.AcademicProgResponse;
 import com.school.sba.responsedto.SubjectResponse;
 import com.school.sba.responsedto.UserResponse;
 import com.school.sba.util.ResponseStructure;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class AcademicProgServiceImpl implements AcademicProgService{
@@ -181,24 +184,41 @@ public class AcademicProgServiceImpl implements AcademicProgService{
 	}
 
 	
-	public void deleteAcademicProgramIfDeleted() {
-	    for (AcademicProgram academicProgram : AcademicProgRepo.findAll()) {
-	        if (academicProgram.isDeleted()) {
-	            // Deleting all the Class Hours related to the Academic Program
-	            if (!academicProgram.getClassHourList().isEmpty()) {
-	            	classhourrepo.deleteAll(academicProgram.getClassHourList());
-	            }
+//	public void deleteAcademicProgramIfDeleted() {
+//	    for (AcademicProgram academicProgram : AcademicProgRepo.findAll()) {
+//	        if (academicProgram.isDeleted()) {
+//	            // Deleting all the Class Hours related to the Academic Program
+//	            if (!academicProgram.getClassHourList().isEmpty()) {
+//	            	classhourrepo.deleteAll(academicProgram.getClassHourList());
+//	            }
+//
+//	            // Unlinking Academic Program from Users
+//	            for (User user : academicProgram.getUser()) {
+//	                user.getProg().remove(academicProgram);
+//	            }
+//	            userrepo.saveAll(academicProgram.getUser());
+//
+//	            // Finally, delete the Academic Program
+//	            AcademicProgRepo.delete(academicProgram);
+//	        }
+//	    }
+//	}
+	
+	@Transactional
+	public void deleteAcademicProgramIfDeleted()
+	{
+		List<AcademicProgram> academicPrograms = AcademicProgRepo.findByIsDeleted(true);
+		for(AcademicProgram academicProgram:academicPrograms)
+		{
+			List<ClassHour> listOfClassHours = academicProgram.getClassHourList();
+			
+			for(ClassHour listHour:listOfClassHours)
+			{
+				classhourrepo.delete(listHour);;
+			}
+			AcademicProgRepo.delete(academicProgram);
 
-	            // Unlinking Academic Program from Users
-	            for (User user : academicProgram.getUser()) {
-	                user.getProg().remove(academicProgram);
-	            }
-	            userrepo.saveAll(academicProgram.getUser());
-
-	            // Finally, delete the Academic Program
-	            AcademicProgRepo.delete(academicProgram);
-	        }
-	    }
+		}
 	}
 }
 

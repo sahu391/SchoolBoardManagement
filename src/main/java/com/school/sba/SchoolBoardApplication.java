@@ -1,5 +1,6 @@
 package com.school.sba;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class SchoolBoardApplication {
 		SpringApplication.run(SchoolBoardApplication.class, args);
 		
 		
+	
 		
 		}
 		

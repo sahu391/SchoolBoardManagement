@@ -16,7 +16,11 @@ public interface ClassHourService {
 
 	ResponseEntity<String> updateClassHour(List<ClassHourDTO> classHourDTOList);
 
-	ResponseEntity<String> generateClassHourForNextWeek();
+	
+	
+	ResponseEntity<ResponseStructure<List<ClassHour>>> AutoRepeatNextWeekClassHours(int programId);
+
+	ClassHour createNewClassHour(ClassHour cl);
 
 
 
